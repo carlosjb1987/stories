@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Lista de historias</title>
+</head>
+<body>
+	<h1>Lista de historias</h1>
+	<ul>
+	{% for story in stories %}
+		<li><a href="{% url 'story' story.id %}">{{ story.titulo }}</a></li>
+	{% endfor %}
+	</ul>
+</body>
+</html>

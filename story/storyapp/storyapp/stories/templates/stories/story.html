@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <h1>{{ story.titulo }}</h1>
+  {% for componente in componentes %}
+    {% if componente.tipo == 'video' %}
+      <video src="{{ componente.contenido }}" {% if componente.duracion %}duration="{{ componente.duracion }}"{% endif %}></video>
+    {% elif componente.tipo == 'imagen' %}
+      <img src="{{ componente.contenido }}" alt="imagen">
+    {% elif componente.tipo == 'letra' %}
+      <p>{{ componente.contenido }}</p>
+    {% endif %}
+  {% endfor %}
+
+  {% if preguntas %}
+    <h2>Preguntas:</h2>
+    <form method="post">
+      {% csrf_token %}
+      {% for pregunta in preguntas %}
+        <p>{{ pregunta.texto }}</p>
+        <p><input type="radio" name="pregunta_{{ pregunta.id }}" value="A">{{ pregunta.opcion_a }}</p>
+        <p><input type="radio" name="pregunta_{{ pregunta.id }}" value="B">{{ pregunta.opcion_b }}</p>
+        <p><input type="radio" name="pregunta_{{ pregunta.id }}" value="C">{{ pregunta.opcion_c }}</p>
+        <p><input type="radio" name="pregunta_{{ pregunta.id }}" value="D">{{ pregunta.opcion_d }}</p>
+      {% endfor %}
+      <input type="submit" value="Enviar">
+    </form>
+  {% endif %}
+
+  {% if resultados %}
+    <h2>Resultados:</h2>
+    <ul>
+      {% for resultado in resultados %}
+        <li>{{ resultado.pregunta.texto }} - Respuesta elegida: {{ resultado.respuesta_elegida }}</li>
+      {% endfor %}
+    </ul>
+  {% endif %}
+{% endblock %}
